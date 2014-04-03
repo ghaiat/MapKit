@@ -1,4 +1,4 @@
-cordova.define("com.phonegap.plugins.mapkit.mapkit", function(require, exports, module) { var exec = require('cordova/exec');
+var exec = require('cordova/exec');
 
 var MapKit = function() {
 	this.mapType = {
@@ -48,7 +48,7 @@ MapKit.prototype = {
 	    options = setDefaults(options);
 		exec(success, error, 'MapKit', 'showMap', [options]);
 	},
-
+	
 	moveMap: function(success, error, options) {
 	    options = setDefaults(options);
 		exec(success, error, 'MapKit', 'moveMap', [options]);
@@ -73,5 +73,3 @@ MapKit.prototype = {
 };
 
 module.exports = new MapKit();
-
-});
