@@ -34,4 +34,7 @@
 
 - (void)addMapPins:(CDVInvokedUrlCommand *)command;
 
+- (void)moveMap:(CDVInvokedUrlCommand *)command;
+
+
 @end
