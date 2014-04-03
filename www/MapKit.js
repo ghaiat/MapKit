@@ -49,9 +49,8 @@ MapKit.prototype = {
 		exec(success, error, 'MapKit', 'showMap', [options]);
 	},
 	
-	moveMap: function(success, error, options) {
-	    options = setDefaults(options);
-		exec(success, error, 'MapKit', 'moveMap', [options]);
+	moveMap: function(move, success, error) {
+	  	exec(success, error, 'MapKit', 'moveMap', [move]);
 	},
 
 	addMapPins: function(pins, success, error) {
