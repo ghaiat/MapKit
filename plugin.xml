@@ -2,10 +2,10 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.phonegap.plugins.mapkit"
-    version="0.9.3">
+    version="0.9.4">
 
     <name>MapKit</name>
-    <author>Anis Kadri</author>
+    <author>Gilles Haiat</author>
     <license>Apache</license>
 
     <asset src="www/map-close-button.png" target="img/map-close-button.png" />
