@@ -62,6 +62,11 @@
 	MKCoordinateRegion region=[ self.mapView regionThatFits: MKCoordinateRegionMakeWithDistance(centerCoord,
                                                                                                 diameter*(height / self.webView.bounds.size.width),
                                                                                                 diameter*(height / self.webView.bounds.size.width))];
+    
+    if ([options objectForKey:@"buttonCallback"]) {
+        self.buttonCallback=[[options objectForKey:@"buttonCallback"] description];
+    }
+    
     [self.mapView setRegion:region animated:YES];
 	[self.childView addSubview:self.mapView];
 
@@ -143,6 +148,20 @@
 	{
         [self createViewWithOptions:command.arguments[0]];
 	}
+    else {
+        
+        CLLocationCoordinate2D centerCoord ={ [[command.arguments[0] objectForKey:@"lat"] floatValue] , [[command.arguments[0] objectForKey:@"lon"] floatValue] };
+        CLLocationDistance diameter = [[command.arguments[0] objectForKey:@"diameter"] floatValue];
+        float height = ([command.arguments[0] objectForKey:@"height"]) ? [[command.arguments[0] objectForKey:@"height"] floatValue] : self.webView.bounds.size.height/2;
+        
+        MKCoordinateRegion mapRegion=[ self.mapView regionThatFits: MKCoordinateRegionMakeWithDistance(centerCoord,
+                                                                                                       diameter*(height / self.webView.bounds.size.width),
+                                                                                                       diameter*(height / self.webView.bounds.size.width))];
+        
+        
+        [self.mapView setRegion:mapRegion animated: YES];
+        
+    }
 	self.childView.hidden = NO;
 	self.mapView.showsUserLocation = YES;
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
@@ -305,6 +324,34 @@
         self.childView = nil;
 	}
     self.buttonCallback = nil;
+}
+
+- (void)moveMap:(CDVInvokedUrlCommand *)command
+{
+    
+    if (!self.mapView || self.childView.hidden==YES)
+    {
+        return;
+    }
+    
+    NSArray *move = command.arguments[0];
+    
+    for (int y = 0; y < move.count; y++)
+    {
+        NSDictionary *moveData = [move objectAtIndex:y];
+        float xPosEnd = [[moveData objectForKey:@"xPosEnd"] floatValue];
+        float yPosEnd = [[moveData objectForKey:@"yPosEnd"] floatValue];
+        float heightEnd = [[moveData objectForKey:@"heightEnd"] floatValue];
+        float widthEnd = [[moveData objectForKey:@"widthEnd"] floatValue];
+        //NSLog(@"THE LOG SCORE : %f", xPosEnd);
+        [UIView animateWithDuration:0.5f
+                         animations:^{
+                             [self.childView setFrame:CGRectMake(xPosEnd, yPosEnd, widthEnd, heightEnd)];
+                         }
+                         completion:nil
+         ];
+    }
+    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
 }
 
 @end
